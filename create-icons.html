@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Generate Icons</title>
+</head>
+<body>
+  <h2>Generate Icons for Chrome Extension</h2>
+  <p>Open this file in a browser and click the button to generate placeholder icons.</p>
+  <button onclick="generateIcons()">Generate Icons</button>
+  <div id="output"></div>
+
+  <script>
+    function generateIcons() {
+      const sizes = [16, 48, 128];
+      const output = document.getElementById('output');
+      output.innerHTML = '';
+
+      sizes.forEach(size => {
+        const canvas = document.createElement('canvas');
+        canvas.width = size;
+        canvas.height = size;
+        const ctx = canvas.getContext('2d');
+
+        // Background
+        const gradient = ctx.createLinearGradient(0, 0, size, size);
+        gradient.addColorStop(0, '#4A90E2');
+        gradient.addColorStop(1, '#357ABD');
+        ctx.fillStyle = gradient;
+        ctx.fillRect(0, 0, size, size);
+
+        // Camera icon (simplified)
+        ctx.fillStyle = 'white';
+        const iconSize = size * 0.6;
+        const padding = (size - iconSize) / 2;
+
+        // Camera body
+        ctx.fillRect(padding, padding + iconSize * 0.2, iconSize, iconSize * 0.6);
+
+        // Lens
+        ctx.beginPath();
+        ctx.arc(size / 2, size / 2 + iconSize * 0.1, iconSize * 0.25, 0, 2 * Math.PI);
+        ctx.fillStyle = '#357ABD';
+        ctx.fill();
+
+        // Download
+        canvas.toBlob(blob => {
+          const url = URL.createObjectURL(blob);
+          const a = document.createElement('a');
+          a.href = url;
+          a.download = `icon${size}.png`;
+          a.textContent = `Download icon${size}.png`;
+          a.style.display = 'block';
+          a.style.marginBottom = '10px';
+          output.appendChild(a);
+        });
+      });
+    }
+  </script>
+</body>
+</html>

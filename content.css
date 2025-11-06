@@ -1,0 +1,112 @@
+/* Overlay that covers the entire page */
+#screenshot-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.3);
+  z-index: 2147483647;
+  cursor: crosshair;
+  pointer-events: auto;
+}
+
+/* Selection box */
+#screenshot-selection {
+  position: fixed;
+  border: 2px dashed #4A90E2;
+  background-color: rgba(74, 144, 226, 0.1);
+  box-sizing: border-box;
+  pointer-events: none;
+}
+
+/* Corner handles for resizing */
+.screenshot-handle {
+  position: absolute;
+  width: 12px;
+  height: 12px;
+  background-color: #4A90E2;
+  border: 2px solid white;
+  border-radius: 50%;
+  cursor: pointer;
+  z-index: 10;
+  pointer-events: auto;
+}
+
+.screenshot-handle.nw {
+  top: -6px;
+  left: -6px;
+  cursor: nw-resize;
+}
+
+.screenshot-handle.ne {
+  top: -6px;
+  right: -6px;
+  cursor: ne-resize;
+}
+
+.screenshot-handle.sw {
+  bottom: -6px;
+  left: -6px;
+  cursor: sw-resize;
+}
+
+.screenshot-handle.se {
+  bottom: -6px;
+  right: -6px;
+  cursor: se-resize;
+}
+
+/* Control panel */
+#screenshot-controls {
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: white;
+  padding: 15px 25px;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  z-index: 2147483648;
+  display: none;
+  gap: 10px;
+  align-items: center;
+}
+
+#screenshot-controls.visible {
+  display: flex;
+}
+
+#screenshot-controls button {
+  padding: 8px 16px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+  transition: background-color 0.2s;
+}
+
+#screenshot-capture-btn {
+  background-color: #4A90E2;
+  color: white;
+}
+
+#screenshot-capture-btn:hover {
+  background-color: #357ABD;
+}
+
+#screenshot-cancel-btn {
+  background-color: #E0E0E0;
+  color: #333;
+}
+
+#screenshot-cancel-btn:hover {
+  background-color: #BDBDBD;
+}
+
+#screenshot-info {
+  font-size: 12px;
+  color: #666;
+  margin-right: 10px;
+}

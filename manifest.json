@@ -1,0 +1,17 @@
+{
+  "manifest_version": 3,
+  "name": "Scrollable Screenshot",
+  "version": "1.0.0",
+  "description": "Take screenshots of selected areas with scroll support",
+  "permissions": [
+    "activeTab",
+    "scripting",
+    "downloads"
+  ],
+  "action": {
+    "default_title": "Take Screenshot"
+  },
+  "background": {
+    "service_worker": "background.js"
+  }
+}
