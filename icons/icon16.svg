@@ -1,0 +1,57 @@
+<svg width="16" height="16" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <linearGradient id="bgGrad16" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" style="stop-color:#4A90E2;stop-opacity:1" />
+          <stop offset="100%" style="stop-color:#357ABD;stop-opacity:1" />
+        </linearGradient>
+        <linearGradient id="screenGrad16" x1="0%" y1="0%" x2="0%" y2="100%">
+          <stop offset="0%" style="stop-color:#E8F4FD;stop-opacity:1" />
+          <stop offset="100%" style="stop-color:#D2E9FC;stop-opacity:1" />
+        </linearGradient>
+      </defs>
+
+      <!-- Background circle -->
+      <circle cx="8" cy="8" r="7.52" fill="url(#bgGrad16)" stroke="#2E6DA4" stroke-width="0.25"/>
+
+      <!-- Camera/monitor outline -->
+      <rect x="2.496" y="3.12" width="11.008" height="7.504" rx="0.496"
+            fill="url(#screenGrad16)" stroke="#2E6DA4" stroke-width="0.25"/>
+
+      <!-- Screen content representing scrollable content -->
+      <rect x="3.504" y="4.128" width="8.992" height="5.504"
+            fill="white" stroke="#4A90E2" stroke-width="0.125"/>
+
+      <!-- Content lines representing text -->
+      <line x1="4.368" y1="4.992" x2="11.632" y2="4.992"
+            stroke="#4A90E2" stroke-width="0.25"/>
+      <line x1="4.368" y1="5.744" x2="10.624" y2="5.744"
+            stroke="#4A90E2" stroke-width="0.25"/>
+      <line x1="4.368" y1="6.496" x2="11.248" y2="6.496"
+            stroke="#4A90E2" stroke-width="0.25"/>
+      <line x1="4.368" y1="7.248" x2="10" y2="7.248"
+            stroke="#4A90E2" stroke-width="0.25"/>
+      <line x1="4.368" y1="8" x2="11.008" y2="8"
+            stroke="#4A90E2" stroke-width="0.25"/>
+
+      <!-- Scrollbar -->
+      <rect x="11.872" y="4.128" width="0.624" height="5.504"
+            fill="#E0E0E0" stroke="#999" stroke-width="0.0625"/>
+      <rect x="11.872" y="4.992" width="0.624" height="2.496"
+            fill="#4A90E2"/>
+
+      <!-- Camera shutter button -->
+      <circle cx="8" cy="11.872" r="0.992"
+              fill="white" stroke="#2E6DA4" stroke-width="0.25"/>
+      <circle cx="8" cy="11.872" r="0.496"
+              fill="#4A90E2"/>
+
+      <!-- Viewfinder corners for screenshot selection -->
+      <path d="M 3.744 4.368 L 3.744 5.248 M 3.744 4.368 L 4.624 4.368"
+            stroke="#FF6B6B" stroke-width="0.25" fill="none" stroke-linecap="round"/>
+      <path d="M 12.256 4.368 L 12.256 5.248 M 12.256 4.368 L 11.376 4.368"
+            stroke="#FF6B6B" stroke-width="0.25" fill="none" stroke-linecap="round"/>
+      <path d="M 3.744 9.376 L 3.744 8.496 M 3.744 9.376 L 4.624 9.376"
+            stroke="#FF6B6B" stroke-width="0.25" fill="none" stroke-linecap="round"/>
+      <path d="M 12.256 9.376 L 12.256 8.496 M 12.256 9.376 L 11.376 9.376"
+            stroke="#FF6B6B" stroke-width="0.25" fill="none" stroke-linecap="round"/>
+    </svg>

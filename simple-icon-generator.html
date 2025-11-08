@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Direct PNG Icon Generator</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 20px; }
+    .icon-preview { margin: 10px; text-align: center; display: inline-block; }
+    .icon-preview canvas { border: 1px solid #ccc; }
+    button { background: #4A90E2; color: white; padding: 10px 20px; border: none; border-radius: 4px; cursor: pointer; font-size: 16px; margin: 10px; }
+    button:hover { background: #357ABD; }
+    .download-section { margin-top: 20px; }
+    .download-link { display: inline-block; margin: 5px; padding: 8px 15px; background: #28a745; color: white; text-decoration: none; border-radius: 4px; }
+    .download-link:hover { background: #218838; }
+    .status { margin: 10px; padding: 10px; background: #f8f9fa; border-radius: 4px; }
+  </style>
+</head>
+<body>
+  <h2>Direct PNG Icon Generator for Chrome Extension</h2>
+  <div class="status">
+    <p>🎨 Generate professional PNG icons directly without requiring SVG files</p>
+    <p>📐 Creates all required sizes: 16px, 48px, 128px, 256px, 512px</p>
+  </div>
+
+  <button onclick="generateAllIcons()">Generate All PNG Icons</button>
+
+  <div id="preview"></div>
+  <div id="downloads" class="download-section"></div>
+
+  <script>
+    function drawScreenshotIcon(canvas, size) {
+      const ctx = canvas.getContext('2d');
+      const centerX = size / 2;
+      const centerY = size / 2;
+      const scale = size / 128;
+
+      // Clear canvas
+      ctx.clearRect(0, 0, size, size);
+
+      // Background gradient
+      const gradient = ctx.createLinearGradient(0, 0, size, size);
+      gradient.addColorStop(0, '#4A90E2');
+      gradient.addColorStop(1, '#357ABD');
+
+      // Background circle
+      ctx.fillStyle = gradient;
+      ctx.beginPath();
+      ctx.arc(centerX, centerY, size * 0.47, 0, 2 * Math.PI);
+      ctx.fill();
+
+      // Add subtle border
+      ctx.strokeStyle = '#2E6DA4';
+      ctx.lineWidth = scale * 2;
+      ctx.stroke();
+
+      // Camera/monitor outline
+      const frameX = size * 0.156;
+      const frameY = size * 0.195;
+      const frameWidth = size * 0.688;
+      const frameHeight = size * 0.469;
+
+      // Screen gradient background
+      const screenGradient = ctx.createLinearGradient(frameX, frameY, frameX, frameY + frameHeight);
+      screenGradient.addColorStop(0, '#E8F4FD');
+      screenGradient.addColorStop(1, '#D2E9FC');
+
+      ctx.fillStyle = screenGradient;
+      ctx.strokeStyle = '#2E6DA4';
+      ctx.lineWidth = scale * 2;
+
+      // Draw rounded rectangle for screen
+      const radius = size * 0.031;
+      ctx.beginPath();
+      ctx.moveTo(frameX + radius, frameY);
+      ctx.lineTo(frameX + frameWidth - radius, frameY);
+      ctx.quadraticCurveTo(frameX + frameWidth, frameY, frameX + frameWidth, frameY + radius);
+      ctx.lineTo(frameX + frameWidth, frameY + frameHeight - radius);
+      ctx.quadraticCurveTo(frameX + frameWidth, frameY + frameHeight, frameX + frameWidth - radius, frameY + frameHeight);
+      ctx.lineTo(frameX + radius, frameY + frameHeight);
+      ctx.quadraticCurveTo(frameX, frameY + frameHeight, frameX, frameY + frameHeight - radius);
+      ctx.lineTo(frameX, frameY + radius);
+      ctx.quadraticCurveTo(frameX, frameY, frameX + radius, frameY);
+      ctx.closePath();
+      ctx.fill();
+      ctx.stroke();
+
+      // Screen content area
+      const contentX = size * 0.219;
+      const contentY = size * 0.258;
+      const contentWidth = size * 0.562;
+      const contentHeight = size * 0.344;
+
+      ctx.fillStyle = 'white';
+      ctx.strokeStyle = '#4A90E2';
+      ctx.lineWidth = scale;
+      ctx.fillRect(contentX, contentY, contentWidth, contentHeight);
+      ctx.strokeRect(contentX, contentY, contentWidth, contentHeight);
+
+      // Content lines representing text
+      ctx.strokeStyle = '#4A90E2';
+      ctx.lineWidth = scale * 2;
+      const lines = [
+        {y1: contentY + size * 0.054, x2: contentX + contentWidth * 0.95},
+        {y1: contentY + size * 0.101, x2: contentX + contentWidth * 0.85},
+        {y1: contentY + size * 0.148, x2: contentX + contentWidth * 0.92},
+        {y1: contentY + size * 0.195, x2: contentX + contentWidth * 0.78},
+        {y1: contentY + size * 0.242, x2: contentX + contentWidth * 0.94}
+      ];
+
+      lines.forEach(line => {
+        ctx.beginPath();
+        ctx.moveTo(contentX + size * 0.054, line.y1);
+        ctx.lineTo(line.x2, line.y1);
+        ctx.stroke();
+      });
+
+      // Scrollbar
+      const scrollbarX = contentX + contentWidth - size * 0.039;
+      const scrollbarWidth = size * 0.039;
+
+      // Scrollbar track
+      ctx.fillStyle = '#E0E0E0';
+      ctx.strokeStyle = '#999';
+      ctx.lineWidth = scale * 0.5;
+      ctx.fillRect(scrollbarX, contentY, scrollbarWidth, contentHeight);
+      ctx.strokeRect(scrollbarX, contentY, scrollbarWidth, contentHeight);
+
+      // Scrollbar thumb
+      ctx.fillStyle = '#4A90E2';
+      ctx.fillRect(scrollbarX, contentY + size * 0.054, scrollbarWidth, size * 0.156);
+
+      // Camera shutter button
+      const buttonY = size * 0.742;
+      const buttonRadius = size * 0.062;
+
+      ctx.fillStyle = 'white';
+      ctx.strokeStyle = '#2E6DA4';
+      ctx.lineWidth = scale * 2;
+      ctx.beginPath();
+      ctx.arc(centerX, buttonY, buttonRadius, 0, 2 * Math.PI);
+      ctx.fill();
+      ctx.stroke();
+
+      // Button center
+      ctx.fillStyle = '#4A90E2';
+      ctx.beginPath();
+      ctx.arc(centerX, buttonY, size * 0.031, 0, 2 * Math.PI);
+      ctx.fill();
+
+      // Viewfinder corners for screenshot selection
+      if (size >= 32) { // Only show on larger icons
+        ctx.strokeStyle = '#FF6B6B';
+        ctx.lineWidth = Math.max(scale * 2, 1);
+        const cornerSize = size * 0.055;
+        const cornerOffset = size * 0.234;
+
+        // Top-left corner
+        ctx.beginPath();
+        ctx.moveTo(cornerOffset + cornerSize, cornerOffset);
+        ctx.lineTo(cornerOffset, cornerOffset);
+        ctx.lineTo(cornerOffset, cornerOffset + cornerSize);
+        ctx.stroke();
+
+        // Top-right corner
+        const topRightX = size - cornerOffset;
+        ctx.beginPath();
+        ctx.moveTo(topRightX - cornerSize, cornerOffset);
+        ctx.lineTo(topRightX, cornerOffset);
+        ctx.lineTo(topRightX, cornerOffset + cornerSize);
+        ctx.stroke();
+
+        // Bottom-left corner
+        const bottomY = size - cornerOffset;
+        ctx.beginPath();
+        ctx.moveTo(cornerOffset + cornerSize, bottomY);
+        ctx.lineTo(cornerOffset, bottomY);
+        ctx.lineTo(cornerOffset, bottomY - cornerSize);
+        ctx.stroke();
+
+        // Bottom-right corner
+        ctx.beginPath();
+        ctx.moveTo(topRightX - cornerSize, bottomY);
+        ctx.lineTo(topRightX, bottomY);
+        ctx.lineTo(topRightX, bottomY - cornerSize);
+        ctx.stroke();
+      }
+    }
+
+    function generateAllIcons() {
+      const sizes = [16, 48, 128, 256, 512];
+      const previewDiv = document.getElementById('preview');
+      const downloadsDiv = document.getElementById('downloads');
+
+      previewDiv.innerHTML = '<h3>Generated Icon Previews:</h3>';
+      downloadsDiv.innerHTML = '<h3>Download PNG Icons:</h3>';
+
+      sizes.forEach(size => {
+        // Create preview
+        const preview = document.createElement('div');
+        preview.className = 'icon-preview';
+
+        const canvas = document.createElement('canvas');
+        canvas.width = size;
+        canvas.height = size;
+
+        const label = document.createElement('div');
+        label.textContent = `${size}×${size}`;
+        label.style.marginTop = '5px';
+
+        preview.appendChild(canvas);
+        preview.appendChild(label);
+        previewDiv.appendChild(preview);
+
+        // Draw the icon
+        drawScreenshotIcon(canvas, size);
+
+        // Create download link
+        canvas.toBlob(blob => {
+          const url = URL.createObjectURL(blob);
+          const downloadLink = document.createElement('a');
+          downloadLink.href = url;
+          downloadLink.download = `icon${size}.png`;
+          downloadLink.className = 'download-link';
+          downloadLink.textContent = `Download icon${size}.png`;
+          downloadsDiv.appendChild(downloadLink);
+        }, 'image/png');
+      });
+
+      // Add instructions
+      const instructions = document.createElement('div');
+      instructions.style.marginTop = '20px';
+      instructions.style.padding = '15px';
+      instructions.style.background = '#e7f3ff';
+      instructions.style.borderRadius = '5px';
+      instructions.innerHTML = `
+        <h4>📋 Instructions:</h4>
+        <ol>
+          <li>Download all the PNG icons using the links above</li>
+          <li>Save them to your <code>icons/</code> folder</li>
+          <li>Your manifest.json is already configured to use these icons</li>
+          <li>Reload your Chrome extension to see the new icons</li>
+        </ol>
+      `;
+      downloadsDiv.appendChild(instructions);
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,57 @@
+<svg width="128" height="128" viewBox="0 0 128 128" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <linearGradient id="bgGrad128" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" style="stop-color:#4A90E2;stop-opacity:1" />
+          <stop offset="100%" style="stop-color:#357ABD;stop-opacity:1" />
+        </linearGradient>
+        <linearGradient id="screenGrad128" x1="0%" y1="0%" x2="0%" y2="100%">
+          <stop offset="0%" style="stop-color:#E8F4FD;stop-opacity:1" />
+          <stop offset="100%" style="stop-color:#D2E9FC;stop-opacity:1" />
+        </linearGradient>
+      </defs>
+
+      <!-- Background circle -->
+      <circle cx="64" cy="64" r="60.16" fill="url(#bgGrad128)" stroke="#2E6DA4" stroke-width="2"/>
+
+      <!-- Camera/monitor outline -->
+      <rect x="19.968" y="24.96" width="88.064" height="60.032" rx="3.968"
+            fill="url(#screenGrad128)" stroke="#2E6DA4" stroke-width="2"/>
+
+      <!-- Screen content representing scrollable content -->
+      <rect x="28.032" y="33.024" width="71.936" height="44.032"
+            fill="white" stroke="#4A90E2" stroke-width="1"/>
+
+      <!-- Content lines representing text -->
+      <line x1="34.944" y1="39.936" x2="93.056" y2="39.936"
+            stroke="#4A90E2" stroke-width="2"/>
+      <line x1="34.944" y1="45.952" x2="84.992" y2="45.952"
+            stroke="#4A90E2" stroke-width="2"/>
+      <line x1="34.944" y1="51.968" x2="89.984" y2="51.968"
+            stroke="#4A90E2" stroke-width="2"/>
+      <line x1="34.944" y1="57.984" x2="80" y2="57.984"
+            stroke="#4A90E2" stroke-width="2"/>
+      <line x1="34.944" y1="64" x2="88.064" y2="64"
+            stroke="#4A90E2" stroke-width="2"/>
+
+      <!-- Scrollbar -->
+      <rect x="94.976" y="33.024" width="4.992" height="44.032"
+            fill="#E0E0E0" stroke="#999" stroke-width="0.5"/>
+      <rect x="94.976" y="39.936" width="4.992" height="19.968"
+            fill="#4A90E2"/>
+
+      <!-- Camera shutter button -->
+      <circle cx="64" cy="94.976" r="7.936"
+              fill="white" stroke="#2E6DA4" stroke-width="2"/>
+      <circle cx="64" cy="94.976" r="3.968"
+              fill="#4A90E2"/>
+
+      <!-- Viewfinder corners for screenshot selection -->
+      <path d="M 29.952 34.944 L 29.952 41.984 M 29.952 34.944 L 36.992 34.944"
+            stroke="#FF6B6B" stroke-width="2" fill="none" stroke-linecap="round"/>
+      <path d="M 98.048 34.944 L 98.048 41.984 M 98.048 34.944 L 91.008 34.944"
+            stroke="#FF6B6B" stroke-width="2" fill="none" stroke-linecap="round"/>
+      <path d="M 29.952 75.008 L 29.952 67.968 M 29.952 75.008 L 36.992 75.008"
+            stroke="#FF6B6B" stroke-width="2" fill="none" stroke-linecap="round"/>
+      <path d="M 98.048 75.008 L 98.048 67.968 M 98.048 75.008 L 91.008 75.008"
+            stroke="#FF6B6B" stroke-width="2" fill="none" stroke-linecap="round"/>
+    </svg>

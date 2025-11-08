@@ -1,0 +1,44 @@
+<svg width="128" height="128" viewBox="0 0 128 128" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background with gradient -->
+  <defs>
+    <linearGradient id="bgGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#4A90E2;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#357ABD;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="screenGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#E8F4FD;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#D2E9FC;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+
+  <!-- Background circle -->
+  <circle cx="64" cy="64" r="60" fill="url(#bgGradient)" stroke="#2E6DA4" stroke-width="2"/>
+
+  <!-- Camera/monitor outline -->
+  <rect x="20" y="25" width="88" height="60" rx="4" fill="url(#screenGradient)" stroke="#2E6DA4" stroke-width="2"/>
+
+  <!-- Screen content representing scrollable content -->
+  <rect x="28" y="33" width="72" height="44" fill="white" stroke="#4A90E2" stroke-width="1"/>
+
+  <!-- Scroll lines representing content -->
+  <line x1="35" y1="40" x2="93" y2="40" stroke="#4A90E2" stroke-width="2"/>
+  <line x1="35" y1="46" x2="85" y2="46" stroke="#4A90E2" stroke-width="2"/>
+  <line x1="35" y1="52" x2="90" y2="52" stroke="#4A90E2" stroke-width="2"/>
+  <line x1="35" y1="58" x2="80" y2="58" stroke="#4A90E2" stroke-width="2"/>
+  <line x1="35" y1="64" x2="88" y2="64" stroke="#4A90E2" stroke-width="2"/>
+  <line x1="35" y1="70" x2="75" y2="70" stroke="#4A90E2" stroke-width="2"/>
+
+  <!-- Scrollbar -->
+  <rect x="95" y="33" width="5" height="44" fill="#E0E0E0" stroke="#999" stroke-width="0.5"/>
+  <rect x="95" y="40" width="5" height="20" fill="#4A90E2"/>
+
+  <!-- Camera shutter button -->
+  <circle cx="64" cy="95" r="8" fill="white" stroke="#2E6DA4" stroke-width="2"/>
+  <circle cx="64" cy="95" r="4" fill="#4A90E2"/>
+
+  <!-- Viewfinder corners -->
+  <path d="M 30 35 L 30 42 M 30 35 L 37 35" stroke="#FF6B6B" stroke-width="2" fill="none" stroke-linecap="round"/>
+  <path d="M 91 35 L 91 42 M 91 35 L 84 35" stroke="#FF6B6B" stroke-width="2" fill="none" stroke-linecap="round"/>
+  <path d="M 30 75 L 30 68 M 30 75 L 37 75" stroke="#FF6B6B" stroke-width="2" fill="none" stroke-linecap="round"/>
+  <path d="M 91 75 L 91 68 M 91 75 L 84 75" stroke="#FF6B6B" stroke-width="2" fill="none" stroke-linecap="round"/>
+</svg>

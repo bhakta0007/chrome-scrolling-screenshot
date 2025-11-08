@@ -1,57 +1,212 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Generate Icons</title>
+  <title>Convert SVG Icons to PNG</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 20px; }
+    .icon-preview { margin: 10px; text-align: center; display: inline-block; }
+    .icon-preview canvas { border: 1px solid #ccc; }
+    button { background: #4A90E2; color: white; padding: 10px 20px; border: none; border-radius: 4px; cursor: pointer; font-size: 16px; margin: 10px; }
+    button:hover { background: #357ABD; }
+    .download-section { margin-top: 20px; }
+    .download-link { display: inline-block; margin: 5px; padding: 8px 15px; background: #28a745; color: white; text-decoration: none; border-radius: 4px; }
+    .download-link:hover { background: #218838; }
+    .status { margin: 10px; padding: 10px; background: #f8f9fa; border-radius: 4px; }
+  </style>
 </head>
 <body>
-  <h2>Generate Icons for Chrome Extension</h2>
-  <p>Open this file in a browser and click the button to generate placeholder icons.</p>
-  <button onclick="generateIcons()">Generate Icons</button>
-  <div id="output"></div>
+  <h2>Convert SVG Icons to PNG for Chrome Extension</h2>
+  <div class="status">
+    <p>📁 SVG icons found in <code>icons/</code> directory</p>
+    <p>🎨 Click the button below to convert all SVG icons to PNG format</p>
+  </div>
+
+  <button onclick="convertSVGsToPNGs()">Convert All SVG Icons to PNG</button>
+  <button onclick="generateFallbackIcons()">Generate Simple PNG Icons (Fallback)</button>
+
+  <div id="preview"></div>
+  <div id="downloads" class="download-section"></div>
 
   <script>
-    function generateIcons() {
+    async function loadSVGAsImage(svgPath) {
+      try {
+        const response = await fetch(svgPath);
+        const svgText = await response.text();
+        const blob = new Blob([svgText], { type: 'image/svg+xml' });
+        const url = URL.createObjectURL(blob);
+
+        return new Promise((resolve, reject) => {
+          const img = new Image();
+          img.onload = () => {
+            URL.revokeObjectURL(url);
+            resolve(img);
+          };
+          img.onerror = reject;
+          img.src = url;
+        });
+      } catch (error) {
+        console.error('Error loading SVG:', error);
+        return null;
+      }
+    }
+
+    async function convertSVGsToPNGs() {
+      const sizes = [16, 48, 128, 256, 512];
+      const previewDiv = document.getElementById('preview');
+      const downloadsDiv = document.getElementById('downloads');
+
+      previewDiv.innerHTML = '<h3>Icon Previews:</h3>';
+      downloadsDiv.innerHTML = '<h3>Download PNG Icons:</h3>';
+
+      for (const size of sizes) {
+        const img = await loadSVGAsImage(`icons/icon${size}.svg`);
+
+        if (img) {
+          // Create preview
+          const preview = document.createElement('div');
+          preview.className = 'icon-preview';
+
+          const canvas = document.createElement('canvas');
+          canvas.width = size;
+          canvas.height = size;
+          const ctx = canvas.getContext('2d');
+          ctx.drawImage(img, 0, 0, size, size);
+
+          const label = document.createElement('div');
+          label.textContent = `${size}x${size}`;
+
+          preview.appendChild(canvas);
+          preview.appendChild(label);
+          previewDiv.appendChild(preview);
+
+          // Create download link
+          canvas.toBlob(blob => {
+            const url = URL.createObjectURL(blob);
+            const downloadLink = document.createElement('a');
+            downloadLink.href = url;
+            downloadLink.download = `icon${size}.png`;
+            downloadLink.className = 'download-link';
+            downloadLink.textContent = `Download icon${size}.png`;
+            downloadsDiv.appendChild(downloadLink);
+          });
+        } else {
+          const errorMsg = document.createElement('div');
+          errorMsg.textContent = `❌ Could not load icon${size}.svg`;
+          errorMsg.style.color = 'red';
+          previewDiv.appendChild(errorMsg);
+        }
+      }
+    }
+
+    function generateFallbackIcons() {
       const sizes = [16, 48, 128];
-      const output = document.getElementById('output');
-      output.innerHTML = '';
+      const previewDiv = document.getElementById('preview');
+      const downloadsDiv = document.getElementById('downloads');
+
+      previewDiv.innerHTML = '<h3>Fallback Icon Previews:</h3>';
+      downloadsDiv.innerHTML = '<h3>Download Fallback PNG Icons:</h3>';
 
       sizes.forEach(size => {
+        const preview = document.createElement('div');
+        preview.className = 'icon-preview';
+
         const canvas = document.createElement('canvas');
         canvas.width = size;
         canvas.height = size;
         const ctx = canvas.getContext('2d');
 
-        // Background
+        // Enhanced screenshot icon design
+        const scale = size / 128;
+
+        // Background gradient
         const gradient = ctx.createLinearGradient(0, 0, size, size);
         gradient.addColorStop(0, '#4A90E2');
         gradient.addColorStop(1, '#357ABD');
         ctx.fillStyle = gradient;
         ctx.fillRect(0, 0, size, size);
 
-        // Camera icon (simplified)
-        ctx.fillStyle = 'white';
-        const iconSize = size * 0.6;
-        const padding = (size - iconSize) / 2;
+        // Screen frame
+        ctx.fillStyle = '#E8F4FD';
+        ctx.strokeStyle = '#2E6DA4';
+        ctx.lineWidth = scale * 2;
+        const frameX = size * 0.2;
+        const frameY = size * 0.25;
+        const frameWidth = size * 0.6;
+        const frameHeight = size * 0.4;
+        ctx.fillRect(frameX, frameY, frameWidth, frameHeight);
+        ctx.strokeRect(frameX, frameY, frameWidth, frameHeight);
 
-        // Camera body
-        ctx.fillRect(padding, padding + iconSize * 0.2, iconSize, iconSize * 0.6);
+        // Content lines
+        ctx.strokeStyle = '#4A90E2';
+        ctx.lineWidth = scale * 2;
+        const lineHeight = size * 0.05;
+        const lineSpacing = size * 0.06;
+        for (let i = 0; i < 4; i++) {
+          const y = frameY + size * 0.1 + (i * lineSpacing);
+          ctx.beginPath();
+          ctx.moveTo(frameX + size * 0.1, y);
+          ctx.lineTo(frameX + frameWidth - size * 0.1, y);
+          ctx.stroke();
+        }
 
-        // Lens
+        // Viewfinder corners
+        ctx.strokeStyle = '#FF6B6B';
+        ctx.lineWidth = scale * 3;
+        const cornerSize = size * 0.08;
+
+        // Top-left corner
         ctx.beginPath();
-        ctx.arc(size / 2, size / 2 + iconSize * 0.1, iconSize * 0.25, 0, 2 * Math.PI);
-        ctx.fillStyle = '#357ABD';
-        ctx.fill();
+        ctx.moveTo(frameX + cornerSize, frameY + cornerSize);
+        ctx.lineTo(frameX + cornerSize, frameY);
+        ctx.lineTo(frameX, frameY + cornerSize);
+        ctx.stroke();
 
-        // Download
+        // Top-right corner
+        ctx.beginPath();
+        ctx.moveTo(frameX + frameWidth - cornerSize, frameY + cornerSize);
+        ctx.lineTo(frameX + frameWidth - cornerSize, frameY);
+        ctx.lineTo(frameX + frameWidth, frameY + cornerSize);
+        ctx.stroke();
+
+        // Bottom-left corner
+        ctx.beginPath();
+        ctx.moveTo(frameX + cornerSize, frameY + frameHeight - cornerSize);
+        ctx.lineTo(frameX + cornerSize, frameY + frameHeight);
+        ctx.lineTo(frameX, frameY + frameHeight - cornerSize);
+        ctx.stroke();
+
+        // Bottom-right corner
+        ctx.beginPath();
+        ctx.moveTo(frameX + frameWidth - cornerSize, frameY + frameHeight - cornerSize);
+        ctx.lineTo(frameX + frameWidth - cornerSize, frameY + frameHeight);
+        ctx.lineTo(frameX + frameWidth, frameY + frameHeight - cornerSize);
+        ctx.stroke();
+
+        // Camera button
+        ctx.fillStyle = 'white';
+        ctx.strokeStyle = '#2E6DA4';
+        ctx.lineWidth = scale * 2;
+        ctx.beginPath();
+        ctx.arc(size / 2, size * 0.8, size * 0.08, 0, 2 * Math.PI);
+        ctx.fill();
+        ctx.stroke();
+
+        const label = document.createElement('div');
+        label.textContent = `${size}x${size}`;
+
+        preview.appendChild(canvas);
+        preview.appendChild(label);
+        previewDiv.appendChild(preview);
+
+        // Create download link
         canvas.toBlob(blob => {
           const url = URL.createObjectURL(blob);
-          const a = document.createElement('a');
-          a.href = url;
-          a.download = `icon${size}.png`;
-          a.textContent = `Download icon${size}.png`;
-          a.style.display = 'block';
-          a.style.marginBottom = '10px';
-          output.appendChild(a);
+          const downloadLink = document.createElement('a');
+          downloadLink.href = url;
+          downloadLink.download = `icon${size}.png`;
+          downloadLink.className = 'download-link';
+          downloadLink.textContent = `Download icon${size}.png`;
+          downloadsDiv.appendChild(downloadLink);
         });
       });
     }

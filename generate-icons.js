@@ -1,40 +1,98 @@
-// Generate placeholder icons for the Chrome extension
+// Generate professional icons for the Chrome extension
 // Run with: node generate-icons.js
 
 const fs = require('fs');
 
-// Simple PNG generator using data URLs
+// Generate detailed SVG icon for screenshot extension
 function generateIconSVG(size) {
+  const scale = size / 128;
   return `
-    <svg width="${size}" height="${size}" xmlns="http://www.w3.org/2000/svg">
+    <svg width="${size}" height="${size}" viewBox="0 0 ${size} ${size}" xmlns="http://www.w3.org/2000/svg">
       <defs>
-        <linearGradient id="grad" x1="0%" y1="0%" x2="100%" y2="100%">
+        <linearGradient id="bgGrad${size}" x1="0%" y1="0%" x2="100%" y2="100%">
           <stop offset="0%" style="stop-color:#4A90E2;stop-opacity:1" />
           <stop offset="100%" style="stop-color:#357ABD;stop-opacity:1" />
         </linearGradient>
+        <linearGradient id="screenGrad${size}" x1="0%" y1="0%" x2="0%" y2="100%">
+          <stop offset="0%" style="stop-color:#E8F4FD;stop-opacity:1" />
+          <stop offset="100%" style="stop-color:#D2E9FC;stop-opacity:1" />
+        </linearGradient>
       </defs>
-      <rect width="${size}" height="${size}" fill="url(#grad)"/>
-      <rect x="${size * 0.2}" y="${size * 0.3}" width="${size * 0.6}" height="${size * 0.5}" fill="white" rx="${size * 0.05}"/>
-      <circle cx="${size * 0.5}" cy="${size * 0.55}" r="${size * 0.15}" fill="#357ABD"/>
-      <rect x="${size * 0.35}" y="${size * 0.25}" width="${size * 0.15}" height="${size * 0.08}" fill="white" rx="${size * 0.02}"/>
+
+      <!-- Background circle -->
+      <circle cx="${size/2}" cy="${size/2}" r="${size*0.47}" fill="url(#bgGrad${size})" stroke="#2E6DA4" stroke-width="${scale*2}"/>
+
+      <!-- Camera/monitor outline -->
+      <rect x="${size*0.156}" y="${size*0.195}" width="${size*0.688}" height="${size*0.469}" rx="${size*0.031}"
+            fill="url(#screenGrad${size})" stroke="#2E6DA4" stroke-width="${scale*2}"/>
+
+      <!-- Screen content representing scrollable content -->
+      <rect x="${size*0.219}" y="${size*0.258}" width="${size*0.562}" height="${size*0.344}"
+            fill="white" stroke="#4A90E2" stroke-width="${scale}"/>
+
+      <!-- Content lines representing text -->
+      <line x1="${size*0.273}" y1="${size*0.312}" x2="${size*0.727}" y2="${size*0.312}"
+            stroke="#4A90E2" stroke-width="${scale*2}"/>
+      <line x1="${size*0.273}" y1="${size*0.359}" x2="${size*0.664}" y2="${size*0.359}"
+            stroke="#4A90E2" stroke-width="${scale*2}"/>
+      <line x1="${size*0.273}" y1="${size*0.406}" x2="${size*0.703}" y2="${size*0.406}"
+            stroke="#4A90E2" stroke-width="${scale*2}"/>
+      <line x1="${size*0.273}" y1="${size*0.453}" x2="${size*0.625}" y2="${size*0.453}"
+            stroke="#4A90E2" stroke-width="${scale*2}"/>
+      <line x1="${size*0.273}" y1="${size*0.5}" x2="${size*0.688}" y2="${size*0.5}"
+            stroke="#4A90E2" stroke-width="${scale*2}"/>
+
+      <!-- Scrollbar -->
+      <rect x="${size*0.742}" y="${size*0.258}" width="${size*0.039}" height="${size*0.344}"
+            fill="#E0E0E0" stroke="#999" stroke-width="${scale*0.5}"/>
+      <rect x="${size*0.742}" y="${size*0.312}" width="${size*0.039}" height="${size*0.156}"
+            fill="#4A90E2"/>
+
+      <!-- Camera shutter button -->
+      <circle cx="${size/2}" cy="${size*0.742}" r="${size*0.062}"
+              fill="white" stroke="#2E6DA4" stroke-width="${scale*2}"/>
+      <circle cx="${size/2}" cy="${size*0.742}" r="${size*0.031}"
+              fill="#4A90E2"/>
+
+      <!-- Viewfinder corners for screenshot selection -->
+      <path d="M ${size*0.234} ${size*0.273} L ${size*0.234} ${size*0.328} M ${size*0.234} ${size*0.273} L ${size*0.289} ${size*0.273}"
+            stroke="#FF6B6B" stroke-width="${scale*2}" fill="none" stroke-linecap="round"/>
+      <path d="M ${size*0.766} ${size*0.273} L ${size*0.766} ${size*0.328} M ${size*0.766} ${size*0.273} L ${size*0.711} ${size*0.273}"
+            stroke="#FF6B6B" stroke-width="${scale*2}" fill="none" stroke-linecap="round"/>
+      <path d="M ${size*0.234} ${size*0.586} L ${size*0.234} ${size*0.531} M ${size*0.234} ${size*0.586} L ${size*0.289} ${size*0.586}"
+            stroke="#FF6B6B" stroke-width="${scale*2}" fill="none" stroke-linecap="round"/>
+      <path d="M ${size*0.766} ${size*0.586} L ${size*0.766} ${size*0.531} M ${size*0.766} ${size*0.586} L ${size*0.711} ${size*0.586}"
+            stroke="#FF6B6B" stroke-width="${scale*2}" fill="none" stroke-linecap="round"/>
     </svg>
   `.trim();
 }
 
-console.log('Generating icons...');
+// Create icons directory if it doesn't exist
+const iconsDir = 'icons';
+if (!fs.existsSync(iconsDir)) {
+  fs.mkdirSync(iconsDir);
+  console.log('Created icons directory');
+}
 
-// For now, just create the SVG files
-const sizes = [16, 48, 128];
+console.log('Generating professional icons for Chrome extension...');
+
+// Generate all required icon sizes for Chrome extensions
+const sizes = [16, 48, 128, 256, 512];
 
 sizes.forEach(size => {
   const svg = generateIconSVG(size);
-  const filename = `icon${size}.svg`;
+  const filename = `${iconsDir}/icon${size}.svg`;
   fs.writeFileSync(filename, svg);
-  console.log(`Created ${filename}`);
+  console.log(`✓ Created ${filename}`);
 });
 
-console.log('\nNote: Chrome extensions prefer PNG files.');
-console.log('You have two options:');
-console.log('1. Use an online SVG to PNG converter for the generated SVG files');
-console.log('2. Install canvas package: npm install canvas');
-console.log('   Then we can generate PNG files directly');
+console.log('\n✅ All SVG icons generated successfully!');
+console.log('\n📋 Next steps:');
+console.log('1. Open create-icons.html in a browser to convert SVGs to PNGs');
+console.log('2. Or use an online converter like https://svgtopng.com/');
+console.log('3. Update manifest.json to include the icon paths:');
+console.log('   "icons": {');
+console.log('     "16": "icons/icon16.png",');
+console.log('     "48": "icons/icon48.png",');
+console.log('     "128": "icons/icon128.png"');
+console.log('   }');
