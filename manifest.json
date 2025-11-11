@@ -5,8 +5,7 @@
   "description": "Take screenshots of selected areas with scroll support",
   "permissions": [
     "activeTab",
-    "scripting",
-    "downloads"
+    "scripting"
   ],
   "icons": {
     "16": "icons/icon16.png",
